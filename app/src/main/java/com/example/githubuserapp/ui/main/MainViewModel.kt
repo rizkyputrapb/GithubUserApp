@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.githubuserapp.model.User
 
 class MainViewModel : ViewModel {
-    private lateinit var listUserMutableLiveData: MutableLiveData<List<User>>
+    private var listUserMutableLiveData = MutableLiveData<List<User>>()
     private  var userList: List<User>? = null
 
     constructor(userList: List<User>) {

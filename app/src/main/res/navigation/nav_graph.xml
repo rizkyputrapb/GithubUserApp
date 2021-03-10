@@ -3,19 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/NavHostFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
+        android:id="@+id/NavHostFragment"
         android:name="com.example.githubuserapp.ui.main.MainFragment"
         android:label="main_fragment"
-        tools:layout="@layout/main_fragment" >
-        <action
-            android:id="@+id/action_mainFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/detailFragment"
-        android:name="com.example.githubuserapp.ui.main.DetailFragment"
-        android:label="DetailFragment" />
+        tools:layout="@layout/main_fragment" />
 </navigation>

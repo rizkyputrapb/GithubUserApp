@@ -3,7 +3,7 @@ package com.example.githubuserapp.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class User(val username: String?, val name: String?, val location: String?, val repository: String?, val company: String?, val followers: String?, val following: String?, val avatar: String?):
+data class User(val username: String?, val name: String?, val location: String?, val repository: String?, val company: String?, val followers: String?, val following: String?, val avatar: Int?) :
     Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -13,7 +13,7 @@ data class User(val username: String?, val name: String?, val location: String?,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString()
+        parcel.readValue(Int::class.java.classLoader) as? Int
     ) {
     }
 
@@ -25,7 +25,7 @@ data class User(val username: String?, val name: String?, val location: String?,
         parcel.writeString(company)
         parcel.writeString(followers)
         parcel.writeString(following)
-        parcel.writeString(avatar)
+        parcel.writeValue(avatar)
     }
 
     override fun describeContents(): Int {
@@ -41,4 +41,5 @@ data class User(val username: String?, val name: String?, val location: String?,
             return arrayOfNulls(size)
         }
     }
+
 }

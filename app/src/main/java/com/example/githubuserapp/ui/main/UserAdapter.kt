@@ -8,8 +8,8 @@ import com.bumptech.glide.Glide
 import com.example.githubuserapp.databinding.ItemUserBinding
 import com.example.githubuserapp.model.User
 
-class UserAdapter(private var userList: List<User>?) : Adapter<UserAdapter.UserViewHolder>() {
-
+class UserAdapter : Adapter<UserAdapter.UserViewHolder>() {
+    private lateinit var userList: List<User>
     fun setUserList(userList: List<User>) {
         this.userList = userList
         notifyDataSetChanged()
