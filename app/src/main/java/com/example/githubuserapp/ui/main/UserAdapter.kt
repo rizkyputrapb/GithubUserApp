@@ -7,9 +7,17 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.bumptech.glide.Glide
 import com.example.githubuserapp.databinding.ItemUserBinding
 import com.example.githubuserapp.model.User
+import kotlin.reflect.KFunction1
 
-class UserAdapter : Adapter<UserAdapter.UserViewHolder>() {
-    private lateinit var userList: List<User>
+class UserAdapter : RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+
+    private var itemUserListener: OnItemUserListener? = null
+    private var userList: List<User>? = null
+
+    constructor(itemUserListener: OnItemUserListener?) {
+        this.itemUserListener = itemUserListener
+    }
+
     fun setUserList(userList: List<User>) {
         this.userList = userList
         notifyDataSetChanged()
@@ -17,11 +25,13 @@ class UserAdapter : Adapter<UserAdapter.UserViewHolder>() {
 
     inner class UserViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: User?) {
+        fun bind(user: User?, itemUserListener: OnItemUserListener?) {
             binding.user = user
             Glide.with(itemView)
                 .load(user!!.avatar)
+                .circleCrop()
                 .into(binding.imageView)
+            binding.onclicklistener = itemUserListener
             binding.executePendingBindings()
         }
     }
@@ -34,7 +44,7 @@ class UserAdapter : Adapter<UserAdapter.UserViewHolder>() {
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = userList!![position]
-        holder.bind(user)
+        holder.bind(user, itemUserListener)
     }
 
     override fun getItemCount(): Int {

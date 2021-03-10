@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuserapp.R
@@ -21,7 +23,7 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private var viewModel: MainViewModel? = null
     private lateinit var binding: MainFragmentBinding
     private lateinit var dataUsername: Array<String>
     private lateinit var dataName: Array<String>
@@ -52,6 +54,11 @@ class MainFragment : Fragment() {
 
     private fun setupRVUser() {
         val recyclerView = binding.rvUser
+        var adapter = UserAdapter(object: OnItemUserListener {
+            override fun OnUserClicked(user: User?) {
+                viewModel?.onUserClicked(user)
+            }
+        })
         recyclerView.setLayoutManager(LinearLayoutManager(context))
         recyclerView.setHasFixedSize(true)
         recyclerView.addItemDecoration(
@@ -60,12 +67,18 @@ class MainFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
-        var adapter = UserAdapter()
         recyclerView.adapter = adapter
-        viewModel.listUserLiveData().observe(viewLifecycleOwner, { userList ->
+        viewModel?.listUserLiveData()?.observe(viewLifecycleOwner, { userList ->
             adapter.setUserList(
                 userList
             )
+        })
+        viewModel?.navigatetoDetail()?.observe(viewLifecycleOwner, {user ->
+            if (user != null) {
+                val action: NavDirections = MainFragmentDirections.actionMainFragmentToDetailFragment(user)
+                Navigation.findNavController(requireView()).navigate(action)
+                viewModel!!.onUserMainDetailNavigated()
+            }
         })
         adapter.notifyDataSetChanged()
     }
@@ -89,7 +102,7 @@ class MainFragment : Fragment() {
                 repository = dataRepo[position],
                 company = dataComp[position],
                 followers = dataFollowers[position],
-                following = dataFollowers[position]
+                following = dataFollowing[position]
             )
             userList?.add(user)
         }

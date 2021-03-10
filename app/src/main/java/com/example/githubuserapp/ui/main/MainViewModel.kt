@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.githubuserapp.model.User
 
-class MainViewModel : ViewModel {
+class MainViewModel : ViewModel{
     private var listUserMutableLiveData = MutableLiveData<List<User>>()
-    private  var userList: List<User>? = null
+    private var userList: List<User>? = null
 
     constructor(userList: List<User>) {
         this.userList = userList
@@ -18,5 +18,16 @@ class MainViewModel : ViewModel {
         return listUserMutableLiveData
     }
 
+    private val _navigatetoDetail = MutableLiveData<User?>()
+    fun navigatetoDetail(): LiveData<User?> {
+        return _navigatetoDetail
+    }
 
+    fun onUserClicked(user: User?) {
+        _navigatetoDetail.value = user
+    }
+
+    fun onUserMainDetailNavigated() {
+        _navigatetoDetail.value = null
+    }
 }
